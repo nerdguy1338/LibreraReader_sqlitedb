@@ -656,7 +656,7 @@ public class SearchFragment2 extends UIFragment<FileMeta> {
             IMG.clearDiscCache();
             //BooksService.startForeground(getActivity(), BooksService.ACTION_SEARCH_ALL);
 
-            SearchAllBooksWorker.run(getActivity());
+            SearchAllBooksWorker.run(getActivity(), true);
 
         } catch (Exception e) {
             LOG.e(e);

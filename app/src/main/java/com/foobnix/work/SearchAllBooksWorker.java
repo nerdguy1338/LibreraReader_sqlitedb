@@ -13,6 +13,7 @@ import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkerParameters;
+import androidx.work.Data;
 
 import com.foobnix.android.utils.JsonDB;
 import com.foobnix.android.utils.LOG;
@@ -45,6 +46,7 @@ import java.util.List;
 
 public class SearchAllBooksWorker extends MessageWorker {
     public static final String SEARCH_ERRORS = "search_errors";
+    public static final String FORCE_RESCAN = "force_rescan";
     Handler handler;
     List<FileMeta> itemsMeta;
 
@@ -55,10 +57,15 @@ public class SearchAllBooksWorker extends MessageWorker {
     }
 
     public static void run(Context context) {
+        run(context, false);
+    }
 
+    public static void run(Context context, boolean forceRescan) {
 
         OneTimeWorkRequest workRequest = new OneTimeWorkRequest
-                .Builder(SearchAllBooksWorker.class).build();
+                .Builder(SearchAllBooksWorker.class)
+                .setInputData(new Data.Builder().putBoolean(FORCE_RESCAN, forceRescan).build())
+                .build();
 
         WorkManager.getInstance(context)
                 .enqueueUniqueWork("search", ExistingWorkPolicy.KEEP, workRequest);
@@ -90,7 +97,9 @@ public class SearchAllBooksWorker extends MessageWorker {
             });
 
 
-            AppDB.get().deleteAllData();
+            if (getInputData().getBoolean(FORCE_RESCAN, false)) {
+                AppDB.get().deleteAllData();
+            }
 
 
             itemsMeta.clear();
