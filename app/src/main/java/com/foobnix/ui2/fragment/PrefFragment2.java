@@ -2696,7 +2696,7 @@ public class PrefFragment2 extends UIFragment {
 
                     //AppProfile.init(getActivity());
                     //BooksService.startForeground(getActivity(), BooksService.ACTION_SEARCH_ALL);
-                    SearchAllBooksWorker.run(getActivity());
+                    SearchAllBooksWorker.run(getActivity(), true);
                     onTheme();
 
                 }
@@ -2890,7 +2890,7 @@ public class PrefFragment2 extends UIFragment {
 
 
         //BooksService.startForeground(getActivity(), BooksService.ACTION_SEARCH_ALL);
-        SearchAllBooksWorker.run(getActivity());
+        SearchAllBooksWorker.run(getActivity(), true);
 
 
         Intent intent = new Intent(UIFragment.INTENT_TINT_CHANGE)//
